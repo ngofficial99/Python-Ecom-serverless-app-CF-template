@@ -2,16 +2,13 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFormation template for creating Lambda function, DynamoDB table, and API Gateway
 
 Resources:
-  
-
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: ecom-app-function
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
-      Role: arn:aws:iam::398511315975:role/lambda-role 
-# replace with your role arn
+      Role: arn:aws:iam::398511315975:role/lambda-role # Replace with your role ARN
       Code:
         ZipFile: |
           import json
@@ -53,7 +50,7 @@ Resources:
     Properties:
       AuthorizationType: NONE
       HttpMethod: POST
-      ResourceId: !Ref ApiGatewayResource
+      ResourceId: !GetAtt ApiGatewayResource.Id
       RestApiId: !Ref ApiGateway
       Integration:
         IntegrationHttpMethod: POST
