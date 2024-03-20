@@ -60,3 +60,21 @@ def update_order(event):
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
         }
+def get_all_orders():
+    """
+    Retrieves all orders from the database.
+
+    Returns:
+    - response: API Gateway response object.
+    """
+    try:
+        response = table.scan()
+        return {
+            'statusCode': 200,
+            'body': json.dumps(response['Items'])
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
