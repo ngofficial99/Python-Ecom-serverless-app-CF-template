@@ -5,6 +5,34 @@ from botocore.exceptions import ClientError
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('OrdersTable')  # Replace 'OrdersTable' with your DynamoDB table name
 
+def lambda_handler(event, context):
+    """
+    Handles incoming API Gateway requests.
+
+    Parameters:
+    - event: API Gateway event object containing request details.
+    - context: Lambda function runtime information.
+
+    Returns:
+    - response: API Gateway response object.
+    """
+    http_method = event['httpMethod']
+    
+    if http_method == 'POST':
+        return create_order(event)
+    elif http_method == 'PUT':
+        return update_order(event)
+    elif http_method == 'GET':
+        return get_all_orders()
+    elif http_method == 'DELETE':
+        return delete_order(event)
+    else:
+        return {
+            'statusCode': 405,
+            'body': json.dumps({'error': 'Method Not Allowed'})
+        }
+
+
 def create_order(event):
     """
     Creates a new order.
