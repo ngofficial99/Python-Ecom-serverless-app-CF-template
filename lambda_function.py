@@ -78,3 +78,28 @@ def get_all_orders():
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
         }
+        
+def delete_order(event):
+    """
+    Deletes an order.
+
+    Parameters:
+    - event: API Gateway event object containing order ID.
+
+    Returns:
+    - response: API Gateway response object.
+    """
+    try:
+        order_id = event['queryStringParameters']['id']
+
+        response = table.delete_item(Key={'id': order_id})
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'message': 'Order deleted successfully'})
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
+
