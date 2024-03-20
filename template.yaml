@@ -16,16 +16,6 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
-  LambdaLayer:
-    Type: AWS::Lambda::LayerVersion
-    Properties:
-      LayerName: MyLambdaLayer
-      CompatibleRuntimes:
-        - python3.8
-      Content:
-        S3Bucket: !Ref arn:aws:s3:::ecom-app
-        S3Key: !Sub "lambda_function.zip"
-  
   LambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
@@ -33,9 +23,16 @@ Resources:
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
       Role: !GetAtt LambdaRole.Arn
-      Layers:
-        - !Ref LambdaLayer
-  
+      Code:
+        ZipFile: |
+          import json
+
+          def lambda_handler(event, context):
+              return {
+                  'statusCode': 200,
+                  'body': json.dumps('Hello from Lambda!')
+              }
+
   OrdersTable:
     Type: AWS::DynamoDB::Table
     Properties:
