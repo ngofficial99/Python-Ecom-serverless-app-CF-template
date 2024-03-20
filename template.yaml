@@ -23,7 +23,7 @@ Resources:
       CompatibleRuntimes:
         - python3.8
       Content:
-        S3Bucket: !Ref AWS::AccountId
+        S3Bucket: !Ref arn:aws:s3:::ecom-app
         S3Key: !Sub "lambda_function.zip"
   
   LambdaFunction:
