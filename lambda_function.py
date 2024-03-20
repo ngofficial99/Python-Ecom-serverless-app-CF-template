@@ -29,3 +29,34 @@ def create_order(event):
             'statusCode': 500,
             'body': json.dumps({'error': str(e)})
         }
+        
+def update_order(event):
+    """
+    Updates an existing order.
+
+    Parameters:
+    - event: API Gateway event object containing updated order details.
+
+    Returns:
+    - response: API Gateway response object.
+    """
+    try:
+        order_id = event['queryStringParameters']['id']
+        updated_data = json.loads(event['body'])
+        # Validate updated data here if needed
+
+        response = table.update_item(
+            Key={'id': order_id},
+            UpdateExpression='SET #data = :val1',
+            ExpressionAttributeNames={'#data': 'data'},
+            ExpressionAttributeValues={':val1': updated_data}
+        )
+        return {
+            'statusCode': 200,
+            'body': json.dumps({'message': 'Order updated successfully'})
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps({'error': str(e)})
+        }
