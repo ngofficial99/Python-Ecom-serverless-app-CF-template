@@ -2,19 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: CloudFormation template for creating Lambda function, DynamoDB table, and API Gateway
 
 Resources:
-  LambdaRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: lambda-role
-      AssumeRolePolicyDocument:
-        Version: '2012-10-17'
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: lambda.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+  
 
   LambdaFunction:
     Type: AWS::Lambda::Function
@@ -22,7 +10,8 @@ Resources:
       FunctionName: ecom-app-function
       Handler: lambda_function.lambda_handler
       Runtime: python3.8
-      Role: !GetAtt LambdaRole.Arn
+      Role: arn:aws:iam::398511315975:role/lambda-role 
+# replace with your role arn
       Code:
         ZipFile: |
           import json
